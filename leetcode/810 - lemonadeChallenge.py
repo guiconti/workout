@@ -8,8 +8,6 @@
 
 # Return true if and only if you can provide every customer with correct change.
 
- 
-
 # Example 1:
 
 # Input: [5,5,5,10,20]
