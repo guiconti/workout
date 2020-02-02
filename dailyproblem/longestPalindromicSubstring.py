@@ -31,6 +31,6 @@ class Solution:
     return s[start:start + maxLength] 
 
 # Test program
-s = "forgeeksskeegfor"
+s = "geeksskeeg"
 print(str(Solution().longestPalindrome(s)))
 # geeksskeeg
