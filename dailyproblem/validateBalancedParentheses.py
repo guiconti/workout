@@ -1,7 +1,9 @@
+# Validate if a string containing parentheses is balanced
+
 from collections import deque 
 
+# Solution O(n)
 class Solution:
-  Dict = {1: 'Geeks', 2: 'For', 3: 'Geeks'} 
   parenthesesMap = {
     ')': '(',
     ']': '[',

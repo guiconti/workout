@@ -1,3 +1,5 @@
+# Given a Tree return if it is a valid binary tree
+
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, x):
@@ -5,6 +7,7 @@ class TreeNode:
     self.left = None
     self.right = None
 
+# Solution O(log n)
 class Solution:
   def isValidBST(self, node):
     if not node:
@@ -54,7 +57,7 @@ node4.right = TreeNode(7)
 node4.right.left = TreeNode(6)
 node4.right.right = TreeNode(8)
 
-print("Node 1",Solution().isValidBST(node))
-print("Node 2",Solution().isValidBST(node2))
-print("Node 3",Solution().isValidBST(node3))
-print("Node 4",Solution().isValidBST(node4))
+print('Tree 1', Solution().isValidBST(node))
+print('Tree 2', Solution().isValidBST(node2))
+print('Tree 3', Solution().isValidBST(node3))
+print('Tree 4', Solution().isValidBST(node4))
