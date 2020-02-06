@@ -12,7 +12,8 @@
 # Input: A = [1,2,3,4,5,6,10], target = 9
 # Output: [-1, -1]
 
-# Solution (n/2)
+# Solution (n)
+# The average case could be improved to O(logn) using Binary search
 class Solution:
     def getRange(self, arr, target):
         low = 0
