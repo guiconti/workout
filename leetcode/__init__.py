@@ -7,7 +7,6 @@ problems = {}
 root = os.path.dirname(os.path.realpath(__file__))
 for directory in os.listdir(root):
   if ' - ' in directory:
-    # print(f'leetcode.{directory}.test')
     try:
       problem = importlib.import_module(f'leetcode.{directory}.test')
     except:
