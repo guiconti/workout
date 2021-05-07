@@ -36,7 +36,7 @@ def solution(x: int) -> int:
   try:
     result = int(stringified_number)
   except:
-    result = 0
+    return 0
   # Python max int is base-64 not base 32 so we have to manually check for this
   if abs(result) > math.pow(2, 31) - 1:
     result = 0
