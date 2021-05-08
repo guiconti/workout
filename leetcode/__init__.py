@@ -12,7 +12,10 @@ for directory in os.listdir(root):
     except:
       continue
     problems[directory] = problem.test
+    problems[directory + '-file'] = os.path.dirname(os.path.realpath(problem.__file__)) + '\\solution.py'
     directory_splitted = directory.split(' - ')
     problems[directory_splitted[0]] = problem.test
-    problems[directory_splitted[1]] = problem.test
+    problems[directory_splitted[0] + '-file'] = os.path.dirname(os.path.realpath(problem.__file__)) + '\\solution.py'
+    problems[directory_splitted[1] + '-file'] = problem.test
+    problems[directory_splitted[1] + '-file'] = os.path.dirname(os.path.realpath(problem.__file__)) + '\\solution.py'
 

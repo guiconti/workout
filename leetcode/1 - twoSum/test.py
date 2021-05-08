@@ -1,4 +1,4 @@
-from .solution import solution
+from .solution import Solution
 import ast
 import os
 
@@ -16,6 +16,6 @@ def test():
       answer = file.readline()
       if unknown_answer_token != answer:
         answer = ast.literal_eval(answer)
-      result = solution(nums, target)
+      result = Solution().twoSum(nums, target)
       print(f'Result given {result}')
       print(f'Correct answer {answer}')
