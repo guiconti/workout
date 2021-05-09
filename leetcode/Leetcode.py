@@ -12,6 +12,7 @@ class Leetcode:
   problem_url: str = 'https://leetcode.com/graphql'
   submission_url: str = 'https://leetcode.com/problems/{0}/submit/'
   get_submission_url: str = 'https://leetcode.com/submissions/detail/{0}/check/'
+  graphql_url: str = 'https://leetcode.com/graphql'
 
   def __init__(self, username: str = None, password: str = None, session_token: str = None):
     self.session = requests.Session()
@@ -45,14 +46,24 @@ class Leetcode:
       return None
     return response.json()
 
-  def get_problem_data(self, problem_id):
+  def get_problem_data(self, problem_slug: str):
     data = {
       'operationName': 'questionData',
       'query': 'query questionData($titleSlug: String!) {\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    boundTopicId\n    title\n    titleSlug\n    content\n    translatedTitle\n    translatedContent\n    isPaidOnly\n    difficulty\n    likes\n    dislikes\n    isLiked\n    similarQuestions\n    exampleTestcases\n    contributors {\n      username\n      profileUrl\n      avatarUrl\n      __typename\n    }\n    topicTags {\n      name\n      slug\n      translatedName\n      __typename\n    }\n    companyTagStats\n    codeSnippets {\n      lang\n      langSlug\n      code\n      __typename\n    }\n    stats\n    hints\n    solution {\n      id\n      canSeeDetail\n      paidOnly\n      hasVideoSolution\n      paidOnlyVideo\n      __typename\n    }\n    status\n    sampleTestCase\n    metaData\n    judgerAvailable\n    judgeType\n    mysqlSchemas\n    enableRunCode\n    enableTestMode\n    enableDebugger\n    envInfo\n    libraryUrl\n    adminUrl\n    __typename\n  }\n}\n',
       'variables': {
-        'titleSlug': 'two-sum'
+        'titleSlug': problem_slug
       }
     }
+    headers = {
+      'Cookie': f'LEETCODE_SESSION={self.session_token}; csrftoken={self.csrf_token}',
+      'x-csrftoken': self.csrf_token,
+      'referer': self.graphql_url
+    }
+    request = requests.Request('POST', self.graphql_url, json=data, headers=headers).prepare()
+    response = self.session.send(request)
+    if response.status_code != 200:
+      return None
+    return response.json()
 
   def submit(self, problem_id: int, slug: str, code: str):
     data = {
@@ -99,7 +110,7 @@ class Leetcode:
 
     state = response_data.get('state')
     if state != "SUCCESS":
-      print('Waiting for leet code to finish processing the submission...')
+      print('Waiting for leetcode to finish processing the submission...')
       time.sleep(3)
       self.check_submission(submission_id)
       return

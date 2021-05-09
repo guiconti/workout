@@ -1,0 +1,4 @@
+"BCD"
+["BCG","CDE","GEA","FFF"]
+"AABA"
+["AAA","AAB","ABA","ABB","BAC"]

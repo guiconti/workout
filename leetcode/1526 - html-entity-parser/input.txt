@@ -1,0 +1,5 @@
+"&amp; is an HTML entity but &ambassador; is not."
+"and I quote: &quot;...&quot;"
+"Stay home! Practice on Leetcode :)"
+"x &gt; y &amp;&amp; x &lt; y is always false"
+"leetcode.com&frasl;problemset&frasl;all"

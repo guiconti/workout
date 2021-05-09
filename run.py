@@ -1,10 +1,12 @@
 import sys
 import os
 import json
-from leetcode.Leetcode import Leetcode
+import html2markdown
 from dotenv import load_dotenv
+from leetcode import problems
+from leetcode.Leetcode import Leetcode
 
-def get_metadata(problems: dict):
+def get_metadata(leetcode: Leetcode, problems: dict):
   metadata = {"stat": {"question__title_slug": "two-sum"}}
   try:
     with open(problems[sys.argv[1] + '-metadata'], 'r') as file:
@@ -32,14 +34,99 @@ def get_metadata(problems: dict):
           pass
   return metadata
 
+def setup_folders():
+  load_dotenv()
+  if not os.environ.get('SESSION_TOKEN'):
+    print('Please add SESSION_TOKEN to your .env')
+    return
+  leetcode = Leetcode(session_token=os.environ.get('SESSION_TOKEN'))
+  root = problems['root']
+  for directory in os.listdir(root):
+    if not ' - ' in directory:
+      continue
+    print(root + '\\' + directory + '\\solution.py')
+    needs_solution_file = not os.path.exists(root + '\\' + directory + '\\solution.py')
+    needs_test_file = not os.path.exists(root + '\\' + directory + '\\test.py')
+    need_inputs_file = not os.path.exists(root + '\\' + directory + '\\input.txt')
+    needs_description_file = not os.path.exists(root + '\\' + directory + '\\description.md')
+    if not (needs_solution_file or needs_test_file or need_inputs_file or needs_description_file):
+      continue
+    directory_splitted = directory.split(' - ')
+    problem_data = leetcode.get_problem_data(directory_splitted[1])
+    if not problem_data:
+      print(f'Failed to get data for {directory_splitted[1]}')
+      continue
+
+    if needs_solution_file:
+      if not problem_data.get('data', {}).get('question', {}).get('codeSnippets'):
+        continue
+      for code_snippet in problem_data.get('data', {}).get('question', {}).get('codeSnippets', []):
+        if code_snippet.get('langSlug') != 'python3':
+          continue
+        try:
+          with open(root + '\\' + directory + '\\solution.py', 'x') as file:
+            file.write(code_snippet.get('code'))
+        except Exception as e:
+          print(f'Failed to create solution for {directory} with error {e}')
+        break
+
+    if needs_test_file:
+      try:
+        with open(root + '\\' + directory + '\\test.py', 'x') as file:
+          file.write("""
+from .solution import Solution
+import ast
+import os
+
+unknown_answer_token = '?'
+
+def test():
+  with open(os.path.join(os.path.dirname(__file__),  'input.txt'), 'r') as file:
+    while True:
+      nums = file.readline()
+      if not nums:
+        # End of tests
+        return
+      nums = ast.literal_eval(nums)
+      target = ast.literal_eval(file.readline())
+      answer = file.readline()
+      if unknown_answer_token != answer:
+        answer = ast.literal_eval(answer)
+      result = Solution().twoSum(nums, target)
+      print(f'Result given {result}')
+      print(f'Correct answer {answer}')
+          """)
+      except Exception as e:
+        print(f'Failed to create input for {directory} with error {e}')
+
+    if need_inputs_file:
+      try:
+        with open(root + '\\' + directory + '\\input.txt', 'x') as file:
+          file.write(problem_data.get('data', {}).get('question', {}).get('exampleTestcases'))
+      except Exception as e:
+        print(f'Failed to create input for {directory} with error {e}')
+
+    if needs_description_file:
+      try:
+        with open(root + '\\' + directory + '\\description.md', 'x') as file:
+          file.write(html2markdown.convert(problem_data.get('data', {}).get('question', {}).get('content')))
+      except Exception as e:
+        print(f'Failed to create description for {directory} with error {e}')
+
+
 def main():
   if (len(sys.argv) < 2):
     print('Missing problem id')
-  from leetcode import problems
   if not sys.argv[1] in problems:
     print('Problem not found')
+    setup_folders()
     return
-  problems[sys.argv[1]]()
+  try:
+    problems[sys.argv[1]]()
+  except Exception as e:
+    # Let's try setting up the folder
+    setup_folders()
+    problems[sys.argv[1]]()
   if not sys.argv[1] + '-solution' in problems:
     return
   should_submit = input('Submit to Leetcode? Press y.\n')
@@ -50,7 +137,7 @@ def main():
     print('Please add SESSION_TOKEN to your .env')
     return
   leetcode = Leetcode(session_token=os.environ.get('SESSION_TOKEN'))
-  metadata = get_metadata(problems)
+  metadata = get_metadata(leetcode, problems)
   
   with open(problems[sys.argv[1] + '-solution'], 'r') as file:
     solution_text = file.read()

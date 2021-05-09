@@ -1,0 +1,16 @@
+"aababcaab"
+2
+3
+4
+"aaaa"
+1
+3
+3
+"aabcabcab"
+2
+2
+3
+"abcde"
+2
+3
+3

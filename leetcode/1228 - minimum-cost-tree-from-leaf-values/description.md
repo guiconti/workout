@@ -1,0 +1,32 @@
+Given an array `` arr `` of positive integers, consider all binary trees such that:
+
+*   Each node has either 0 or 2 children;
+*   The values of `` arr `` correspond to the values of each&nbsp;__leaf__ in an in-order traversal of the tree.&nbsp; _(Recall that a node is a leaf if and only if it has 0 children.)_
+*   The value&nbsp;of each non-leaf node is equal to the product of the largest leaf value in its left and right subtree respectively.
+
+Among all possible binary trees considered,&nbsp;return the smallest possible sum of the values of each non-leaf node.&nbsp; It is guaranteed this sum fits into a 32-bit integer.
+
+&nbsp;
+
+__Example 1:__
+
+<pre>
+<strong>Input:</strong> arr = [6,2,4]
+<strong>Output:</strong> 32
+<strong>Explanation:</strong>
+There are two possible trees.  The first has non-leaf node sum 36, and the second has non-leaf node sum 32.
+
+    24            24
+   /  \          /  \
+  12   4        6    8
+ /  \               / \
+6    2             2   4
+</pre>
+
+&nbsp;
+
+__Constraints:__
+
+*   `` 2 &lt;= arr.length &lt;= 40 ``
+*   `` 1 &lt;= arr[i] &lt;= 15 ``
+*   It is guaranteed that the answer fits into a 32-bit signed integer (ie.&nbsp;it is less than `` 2^31 ``).

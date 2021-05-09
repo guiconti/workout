@@ -1,0 +1,8 @@
+"(name)is(age)yearsold"
+[["name","bob"],["age","two"]]
+"hi(name)"
+[["a","b"]]
+"(a)(a)(a)aaa"
+[["a","yes"]]
+"(a)(b)"
+[["a","b"],["b","a"]]

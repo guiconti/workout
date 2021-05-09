@@ -1,0 +1,4 @@
+["Solution", "flip", "flip", "flip", "flip"]
+[[2, 2], [], [], [], []]
+["Solution", "flip", "flip", "reset", "flip"]
+[[1, 2], [], [], [], []]

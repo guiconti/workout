@@ -1,0 +1,8 @@
+"abcd"
+"cdabcdab"
+"a"
+"aa"
+"a"
+"a"
+"abc"
+"wxyz"

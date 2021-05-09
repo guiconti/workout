@@ -1,0 +1,8 @@
+["Solution", "pick", "pick", "pick"]
+[[1, []], [], [], []]
+["Solution", "pick", "pick", "pick"]
+[[2, []], [], [], []]
+["Solution", "pick", "pick", "pick"]
+[[3, [1]], [], [], []]
+["Solution", "pick", "pick", "pick"]
+[[4, [2]], [], [], []]

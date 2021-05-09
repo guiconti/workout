@@ -1,0 +1,8 @@
+["acca","bbbb","caca"]
+"aba"
+["abba","baab"]
+"bab"
+["abcd"]
+"abcd"
+["abab","baba","abba","baab"]
+"abba"
