@@ -7,7 +7,10 @@ class Leetcode:
   session: any
   session_token: str
   csrf_token: str
-  submission_url: str = 'https://leetcode.com/problems/two-sum/submit/'
+  csrf_token_url: str = 'https://leetcode.com/accounts/login/'
+  problems_url: str = 'https://leetcode.com/api/problems/all/'
+  problem_url: str = 'https://leetcode.com/graphql'
+  submission_url: str = 'https://leetcode.com/problems/{0}/submit/'
   get_submission_url: str = 'https://leetcode.com/submissions/detail/{0}/check/'
 
   def __init__(self, username: str = None, password: str = None, session_token: str = None):
@@ -19,9 +22,9 @@ class Leetcode:
       self.session_token = self.get_session_token(username, password)
 
   def get_csrf_token(self) -> str:
-    request = requests.Request('GET', 'https://leetcode.com/accounts/login/').prepare()
+    request = requests.Request('GET', self.csrf_token_url).prepare()
     response = self.session.send(request)
-    if (response.status_code != 200):
+    if response.status_code != 200:
       return False
     # print(response.headers['set-cookie'])
     match = re.search('csrftoken=(.*?);', response.headers['set-cookie'])
@@ -34,8 +37,15 @@ class Leetcode:
     # TODO: Login
     return ""
 
+  def get_problems_metadata(self) -> dict:
+    request = requests.Request('GET', self.problems_url).prepare()
+    response = self.session.send(request)
+    if response.status_code != 200:
+      print('Unable to get problems data')
+      return None
+    return response.json()
+
   def get_problem_data(self, problem_id):
-    url = 'https://leetcode.com/graphql'
     data = {
       'operationName': 'questionData',
       'query': 'query questionData($titleSlug: String!) {\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    boundTopicId\n    title\n    titleSlug\n    content\n    translatedTitle\n    translatedContent\n    isPaidOnly\n    difficulty\n    likes\n    dislikes\n    isLiked\n    similarQuestions\n    exampleTestcases\n    contributors {\n      username\n      profileUrl\n      avatarUrl\n      __typename\n    }\n    topicTags {\n      name\n      slug\n      translatedName\n      __typename\n    }\n    companyTagStats\n    codeSnippets {\n      lang\n      langSlug\n      code\n      __typename\n    }\n    stats\n    hints\n    solution {\n      id\n      canSeeDetail\n      paidOnly\n      hasVideoSolution\n      paidOnlyVideo\n      __typename\n    }\n    status\n    sampleTestCase\n    metaData\n    judgerAvailable\n    judgeType\n    mysqlSchemas\n    enableRunCode\n    enableTestMode\n    enableDebugger\n    envInfo\n    libraryUrl\n    adminUrl\n    __typename\n  }\n}\n',
@@ -44,7 +54,7 @@ class Leetcode:
       }
     }
 
-  def submit(self, problem_id: int, code: str):
+  def submit(self, problem_id: int, slug: str, code: str):
     data = {
       'lang': 'python3',
       'question_id': str(problem_id),
@@ -53,9 +63,9 @@ class Leetcode:
     headers = {
       'Cookie': f'LEETCODE_SESSION={self.session_token}; csrftoken={self.csrf_token}',
       'x-csrftoken': self.csrf_token,
-      'referer': self.submission_url
+      'referer': self.submission_url.format(slug)
     }
-    request = requests.Request('POST', self.submission_url, json=data, headers=headers).prepare()
+    request = requests.Request('POST', self.submission_url.format(slug), json=data, headers=headers).prepare()
     response = self.session.send(request)
     if (response.status_code == 429):
       print('Too many consecutive tries, waiting a little and trying again.')
