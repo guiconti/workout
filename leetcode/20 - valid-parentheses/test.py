@@ -8,16 +8,15 @@ unknown_answer_token = '?'
 def test():
   with open(os.path.join(os.path.dirname(__file__),  'input.txt'), 'r') as file:
     while True:
-      nums = file.readline()
-      if not nums:
+      sequence = file.readline()
+      if not sequence:
         # End of tests
         return
-      nums = ast.literal_eval(nums)
-      target = ast.literal_eval(file.readline())
+      sequence = ast.literal_eval(nums)
       answer = file.readline()
       if unknown_answer_token != answer:
         answer = ast.literal_eval(answer)
-      result = Solution().twoSum(nums, target)
+      result = Solution().isValid(sequence)
       print(f'Result given {result}')
       print(f'Correct answer {answer}')
           

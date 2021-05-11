@@ -128,8 +128,6 @@ def main():
   try:
     problems[sys.argv[1]]()
   except Exception as e:
-    # Let's try setting up the folder
-    setup_folders()
     problems[sys.argv[1]]()
   should_submit = input('Submit to Leetcode? Press y.\n')
   if should_submit.lower() != 'y':
