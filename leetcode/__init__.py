@@ -7,7 +7,7 @@ problems = {}
 root = os.path.dirname(os.path.realpath(__file__))
 problems['root'] = root
 for directory in os.listdir(root):
-  print(directory)
+  # print(directory)
   if not ' - ' in directory:
     continue
   try:
