@@ -44,7 +44,6 @@ def setup_folders():
   for directory in os.listdir(root):
     if not ' - ' in directory:
       continue
-    print(root + '\\' + directory + '\\solution.py')
     needs_solution_file = not os.path.exists(root + '\\' + directory + '\\solution.py')
     needs_test_file = not os.path.exists(root + '\\' + directory + '\\test.py')
     need_inputs_file = not os.path.exists(root + '\\' + directory + '\\input.txt')
@@ -121,14 +120,17 @@ def main():
     print('Problem not found')
     setup_folders()
     return
+  if isinstance(sys.argv[1], Exception):
+    print('Huh')
+  if not sys.argv[1] + '-solution' in problems:
+    print(f'Error while loading the solution {problems[sys.argv[1]]}')
+    return
   try:
     problems[sys.argv[1]]()
   except Exception as e:
     # Let's try setting up the folder
     setup_folders()
     problems[sys.argv[1]]()
-  if not sys.argv[1] + '-solution' in problems:
-    return
   should_submit = input('Submit to Leetcode? Press y.\n')
   if should_submit.lower() != 'y':
     return
