@@ -12,7 +12,7 @@ def test():
       if not sequence:
         # End of tests
         return
-      sequence = ast.literal_eval(nums)
+      sequence = ast.literal_eval(sequence)
       answer = file.readline()
       if unknown_answer_token != answer:
         answer = ast.literal_eval(answer)
