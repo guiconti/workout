@@ -13,11 +13,11 @@ def test():
         # End of tests
         return
       nums = ast.literal_eval(nums)
-      target = ast.literal_eval(file.readline())
+      val = ast.literal_eval(file.readline())
       answer = file.readline()
       if unknown_answer_token != answer:
         answer = ast.literal_eval(answer)
-      result = Solution().twoSum(nums, target)
+      result = Solution().removeElement(nums, val)
       print(f'Result given {result}')
       print(f'Correct answer {answer}')
           
