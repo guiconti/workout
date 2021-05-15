@@ -11,6 +11,6 @@ class Solution:
       self.memoization[n - 2] = self.fibonacci(n - 2)
     return self.memoization[n - 1] + self.memoization[n - 2]
 
-  def climbStairs(self, n: int):
+  def climbStairs(self, n: int) -> int:
     return self.fibonacci(n + 1)
   
