@@ -1,17 +1,25 @@
 class Solution:
   def threeSum(self, nums: List[int]) -> List[List[int]]:
+    nums.sort()
     result = []
-    hashMap = {}
-    for i in range(0, len(nums)):
-      for j in range(i + 1, len(nums)):
-        hashMap[nums[i] + nums[j]] = [i, j]
-    print(hashMap)
-    for i in range(0, len(nums)):
-      if not -nums[i] in hashMap:
+    for i in range(0, len(nums) - 2):
+      if i > 0 and nums[i] == nums[i - 1]:
         continue
-      if i in hashMap[-nums[i]]:
-        continue
-      indexes = hashMap[-nums[i]]
-      result.append([nums[i], nums[indexes[0]], nums[indexes[1]]])
+      left = i + 1
+      right = len(nums) - 1
+      while left < right:
+        sum = nums[i] + nums[left] + nums[right]
+        if sum < 0:
+          left += 1
+          continue
+        if sum > 0:
+          right -= 1
+          continue
+        result.append([nums[i], nums[left], nums[right]])
+        while left < len(nums) - 1 and nums[left] == nums[left + 1]:
+          left += 1
+        while right > 0 and nums[right] == nums[right - 1]:
+          right -= 1
+        left += 1
+        right -= 1
     return result
-
