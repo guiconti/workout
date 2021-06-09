@@ -10,4 +10,15 @@ class Solution:
     '9': ['w', 'x', 'y', 'z']
   }
   def letterCombinations(self, digits: str) -> List[str]:
-    return ["ad"]
+    result = []
+    for digit in digits:
+      new_result = []
+      if len(result) == 0:
+        for letter in self.PHONE_NUMBERS[digit]:
+          new_result.append(letter)
+      else:
+        for letter in self.PHONE_NUMBERS[digit]:
+          for combination in result:
+            new_result.append(combination + letter)
+      result = new_result
+    return result
