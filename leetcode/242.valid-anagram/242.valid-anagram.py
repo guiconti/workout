@@ -13,7 +13,7 @@ class Solution:
     for character in t:
       if not character in hashMap:
         return False
-      if hashMap[character] <= 0:
+      if hashMap[character] == 0:
         return False
       hashMap[character] -= 1
     return True
