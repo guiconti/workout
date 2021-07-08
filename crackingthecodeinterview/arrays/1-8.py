@@ -1,7 +1,7 @@
 # Write an algorithm such that if an element in a matrix MXN is 0, its entire row and column will be 0
 # If the result is bigger than the original string return the original string
 
-# Solution 1 Iterate through each element, if a 0 is found add it's row and column to two
+# Solution 1 Iterate through each element, if a 0 is found add its row and column to two
 # support arrays. After everything is checked use the additional arrays to override the
 # rows and columns with 0s
 def Solution1(test):
